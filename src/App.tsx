@@ -12,7 +12,7 @@ function App() {
       <Drawer />
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
-        <Container>
+        <Container sx={{ pt: 2 }}>
           <Routes />
         </Container>
       </Box>

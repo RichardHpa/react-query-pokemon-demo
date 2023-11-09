@@ -4,6 +4,14 @@ const { v4: uuidv4 } = require('uuid');
 
 const DELAY = 1000;
 
+router.get('/', (req, res) => {
+  const books = req.app.db.get('users');
+
+  setTimeout(() => {
+    res.send(books);
+  }, DELAY);
+});
+
 router.post('/', (req, res) => {
   try {
     const user = {
