@@ -2,15 +2,13 @@ import {
   Drawer as MuiDrawer,
   Toolbar,
   Box,
-  List,
-  ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
 } from '@mui/material';
 import PeopleIcon from '@mui/icons-material/People';
 import HomeIcon from '@mui/icons-material/Home';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -18,7 +16,7 @@ const items = [
   {
     label: 'Home',
     icon: <HomeIcon />,
-    path: '/',
+    path: '/dashboard',
   },
   {
     label: 'Users',
@@ -28,6 +26,8 @@ const items = [
 ];
 
 export const Drawer = () => {
+  const location = useLocation();
+
   return (
     <MuiDrawer
       variant="permanent"
@@ -38,17 +38,26 @@ export const Drawer = () => {
       }}
     >
       <Toolbar />
-      <Box sx={{ overflow: 'auto' }}>
-        <List>
-          {items.map((item, index) => (
-            <ListItem key={item.label} disablePadding>
-              <ListItemButton component={Link} to={item.path}>
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.label} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
+
+      <Box mt={4} sx={{ overflow: 'auto' }}>
+        {items.map(item => {
+          const isActive = location.pathname.includes(item.path);
+          return (
+            <ListItemButton
+              key={item.label}
+              sx={{ py: 0.5, minHeight: 32 }}
+              component={Link}
+              to={item.path}
+              selected={isActive}
+            >
+              <ListItemIcon sx={{ color: 'inherit' }}>{item.icon}</ListItemIcon>
+              <ListItemText
+                primary={item.label}
+                primaryTypographyProps={{ fontSize: 14, fontWeight: 'medium' }}
+              />
+            </ListItemButton>
+          );
+        })}
       </Box>
     </MuiDrawer>
   );

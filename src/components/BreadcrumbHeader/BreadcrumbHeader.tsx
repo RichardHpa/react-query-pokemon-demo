@@ -41,42 +41,40 @@ export const BreadcrumbHeader: FC<BreadcrumbHeaderProps> = ({
   return (
     <Box mb={4}>
       <Stack justifyContent="space-between" alignItems="flex-start" direction="row">
-        <Stack>
-          {loading ? (
-            <Skeleton variant="text" sx={{ fontSize: '2.125rem' }} width={300} />
-          ) : (
-            <Stack direction="column">
-              <Typography variant="h4">{title}</Typography>
-              {crumbs && crumbs.length > 0 && (
-                <MUIBreadcrumbs aria-label="breadcrumb">
-                  <LinkRouter underline="hover" color="inherit" to="/">
-                    Home
+        <Stack direction="column">
+          <Typography variant="h4">{loading ? <Skeleton /> : title}</Typography>
+
+          {crumbs && crumbs.length > 0 && (
+            <MUIBreadcrumbs aria-label="breadcrumb">
+              <LinkRouter underline="hover" color="inherit" to="/">
+                Home
+              </LinkRouter>
+              {crumbs.map((crumb, index) => {
+                const last = index === crumbs.length - 1;
+                if (crumb.loading) {
+                  return (
+                    <Skeleton
+                      variant="text"
+                      sx={{ fontSize: '1rem' }}
+                      width={75}
+                      key={crumb.label}
+                    />
+                  );
+                }
+                return last || !crumb.path ? (
+                  <Typography color="text.primary" key={crumb.label}>
+                    {crumb.label}
+                  </Typography>
+                ) : (
+                  <LinkRouter underline="hover" color="inherit" to={crumb.path} key={crumb.path}>
+                    {crumb.label}
                   </LinkRouter>
-                  {crumbs.map((crumb, index) => {
-                    const last = index === crumbs.length - 1;
-                    if (crumb.loading) {
-                      return <Skeleton variant="text" sx={{ fontSize: '1rem' }} width={75} />;
-                    }
-                    return last || !crumb.path ? (
-                      <Typography color="text.primary" key={crumb.path}>
-                        {crumb.label}
-                      </Typography>
-                    ) : (
-                      <LinkRouter
-                        underline="hover"
-                        color="inherit"
-                        to={crumb.path}
-                        key={crumb.path}
-                      >
-                        {crumb.label}
-                      </LinkRouter>
-                    );
-                  })}
-                </MUIBreadcrumbs>
-              )}
-            </Stack>
+                );
+              })}
+            </MUIBreadcrumbs>
           )}
         </Stack>
+
         {actions && <Box>{actions}</Box>}
       </Stack>
     </Box>
