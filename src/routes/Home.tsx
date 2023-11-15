@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Button, Grid, Card, CardHeader, CardActions } from '@mui/material';
 
 import { UserCountCard } from 'components/Cards';
@@ -13,15 +14,17 @@ export const Home = () => {
           <UserCountCard />
         </Grid>
         <Grid item xs={12} md={4}>
-          <Card sx={{ height: '100%' }}>
-            <CardHeader title="Total Items" titleTypographyProps={{ variant: 'h6' }} />
-            <CardActions>
-              <Button>Add Item</Button>
+          <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+            <CardHeader title="Total Cards" titleTypographyProps={{ variant: 'h6' }} />
+            <CardActions sx={{ marginTop: 'auto' }}>
+              <Button component={Link} to="/cards/add">
+                Add Card
+              </Button>
             </CardActions>
           </Card>
         </Grid>
         <Grid item xs={12} md={4}>
-          <Card sx={{ height: '100%' }}>
+          <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
             <CardHeader title="Total Value" titleTypographyProps={{ variant: 'h6' }} />
           </Card>
         </Grid>

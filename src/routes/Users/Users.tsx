@@ -14,10 +14,11 @@ import {
   Box,
 } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
-import { getUsers } from 'api/Users';
 import { Link } from 'react-router-dom';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+
+import { getUsers } from 'api/Users';
 
 import { BreadcrumbHeader } from 'components/BreadcrumbHeader';
 

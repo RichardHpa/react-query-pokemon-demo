@@ -47,7 +47,7 @@ export const BreadcrumbHeader: FC<BreadcrumbHeaderProps> = ({
           {crumbs && crumbs.length > 0 && (
             <MUIBreadcrumbs aria-label="breadcrumb">
               <LinkRouter underline="hover" color="inherit" to="/">
-                Home
+                Dashboard
               </LinkRouter>
               {crumbs.map((crumb, index) => {
                 const last = index === crumbs.length - 1;

@@ -7,7 +7,7 @@ import { getUsers } from 'api/Users';
 export const UserCountCard = () => {
   const { data, isLoading } = useQuery({ queryKey: ['users'], queryFn: getUsers });
   return (
-    <Card sx={{ height: '100%' }}>
+    <Card sx={{ height: '100%', minHeight: '170px', display: 'flex', flexDirection: 'column' }}>
       {isLoading ? (
         <Skeleton height="100%" variant="rounded" />
       ) : (

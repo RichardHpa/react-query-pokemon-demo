@@ -76,6 +76,7 @@ export const EditUser = () => {
           },
           {
             label: 'User info',
+            path: `/users/${userId}`,
           },
           {
             label: 'Edit',

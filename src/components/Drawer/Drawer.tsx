@@ -8,6 +8,7 @@ import {
 } from '@mui/material';
 import PeopleIcon from '@mui/icons-material/People';
 import HomeIcon from '@mui/icons-material/Home';
+import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 import { Link, useLocation } from 'react-router-dom';
 
 const drawerWidth = 240;
@@ -22,6 +23,11 @@ const items = [
     label: 'Users',
     icon: <PeopleIcon />,
     path: '/users',
+  },
+  {
+    label: 'Investments',
+    icon: <AutoGraphIcon />,
+    path: '/investments',
   },
 ];
 
