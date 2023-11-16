@@ -25,9 +25,9 @@ const items = [
     path: '/users',
   },
   {
-    label: 'Investments',
+    label: 'Cards',
     icon: <AutoGraphIcon />,
-    path: '/investments',
+    path: '/cards',
   },
 ];
 

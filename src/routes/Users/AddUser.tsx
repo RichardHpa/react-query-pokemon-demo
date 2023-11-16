@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+
 import { createUser } from 'api/Users';
 import { BreadcrumbHeader } from 'components/BreadcrumbHeader';
 import { ContentContainer } from 'components/ContentContainer';
 import { UserForm } from 'forms/UserForm';
-
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export const AddUser = () => {
   const navigate = useNavigate();

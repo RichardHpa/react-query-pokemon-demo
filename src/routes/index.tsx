@@ -2,7 +2,7 @@ import { Routes as RouterRoutes, Route, Navigate } from 'react-router-dom';
 
 import { Home } from './Home';
 import { Users, AddUser, EditUser, User } from './Users';
-import { Tasks, AddTask } from './Investments';
+import { Cards, AddCard } from './Cards';
 import { Error404 } from './Errors';
 
 export const Routes = () => {
@@ -20,9 +20,9 @@ export const Routes = () => {
         </Route>
       </Route>
 
-      <Route path="investments">
-        <Route index element={<Tasks />} />
-        <Route path="add" element={<AddTask />} />
+      <Route path="cards">
+        <Route index element={<Cards />} />
+        <Route path="add" element={<AddCard />} />
       </Route>
 
       <Route path="*" element={<Error404 />} />

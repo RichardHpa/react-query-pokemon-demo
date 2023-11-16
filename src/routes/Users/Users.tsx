@@ -19,7 +19,6 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
 import { getUsers } from 'api/Users';
-
 import { BreadcrumbHeader } from 'components/BreadcrumbHeader';
 
 import type { User } from 'types/user';

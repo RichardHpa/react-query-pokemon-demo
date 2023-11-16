@@ -5,6 +5,7 @@ const FileSync = require('lowdb/adapters/FileSync');
 const cors = require('cors');
 const morgan = require('morgan');
 const usersRouter = require('./routes/users');
+const cardsRouter = require('./routes/cards');
 
 const dbRoute = './server/db.json';
 
@@ -18,7 +19,7 @@ if (!fs.existsSync(dbRoute)) {
 const adapter = new FileSync(dbRoute);
 const db = low(adapter);
 
-db.defaults({ users: [] }).write();
+db.defaults({ users: [], cards: [] }).write();
 
 const app = express();
 app.db = db;
@@ -30,6 +31,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
 app.use('/api/users', usersRouter);
+app.use('/api/cards', cardsRouter);
 
 const PORT = 3001;
 

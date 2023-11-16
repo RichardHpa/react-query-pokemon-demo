@@ -1,7 +1,11 @@
 import axios from 'helpers/axios';
 
-export const getUsers = async () => {
-  const response = await axios.get('api/users');
+export const createUser = async ({ ...data }) => {
+  const response = await axios.post(`api/users`, JSON.stringify(data), {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 
   if (response.status !== 200) {
     throw new Error('Something went wrong.');
@@ -10,20 +14,14 @@ export const getUsers = async () => {
   return response.data;
 };
 
-export const createUser = async ({ ...data }) => {
-  const response = await fetch(`${process.env.REACT_APP_API_SERVER}/api/users`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  });
+export const getUsers = async () => {
+  const response = await axios.get('api/users');
 
-  if (!response.ok) {
-    throw new Error('something went wrong');
+  if (response.status !== 200) {
+    throw new Error('Something went wrong.');
   }
 
-  return response.json();
+  return response.data;
 };
 
 export const getUser = async (userId: string) => {
@@ -41,6 +39,7 @@ export const updateUser = async (userId: string, values: any) => {
       'Content-Type': 'application/json',
     },
   });
+
   if (response.status !== 200) {
     throw new Error('Something went wrong.');
   }
