@@ -36,7 +36,7 @@ export const Cards = () => {
         return data.map((card: Card) => {
           return (
             <Grid item {...gridMap} key={card.id} component={Link} to={`/cards/${card.id}`}>
-              <img src="images/cardBack.png" width="100%" alt="pokemon card back" />
+              <img src={card.image} width="100%" alt="pokemon card back" />
             </Grid>
           );
         });

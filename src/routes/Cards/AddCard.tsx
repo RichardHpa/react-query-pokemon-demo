@@ -72,13 +72,16 @@ export const AddCard = () => {
         </ContentContainer>
 
         {defaultInfo && (
-          <ContentContainer>
-            <Grid container spacing={4}>
-              <Grid item xs>
-                <CardForm onSubmit={mutateAsync} loading={isPending} initialValues={defaultInfo} />
-              </Grid>
+          <Grid container spacing={4}>
+            <Grid item xs={12} md={4}>
+              <img src={defaultInfo.image} width="100%" alt={defaultInfo.name} />
             </Grid>
-          </ContentContainer>
+            <Grid item xs>
+              <ContentContainer>
+                <CardForm onSubmit={mutateAsync} loading={isPending} initialValues={defaultInfo} />{' '}
+              </ContentContainer>
+            </Grid>
+          </Grid>
         )}
       </Stack>
     </div>

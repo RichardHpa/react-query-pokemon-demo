@@ -2,7 +2,7 @@ import { Routes as RouterRoutes, Route, Navigate } from 'react-router-dom';
 
 import { Home } from './Home';
 import { Users, AddUser, EditUser, User } from './Users';
-import { Cards, AddCard } from './Cards';
+import { Cards, AddCard, Card } from './Cards';
 import { Error404 } from './Errors';
 
 export const Routes = () => {
@@ -23,6 +23,9 @@ export const Routes = () => {
       <Route path="cards">
         <Route index element={<Cards />} />
         <Route path="add" element={<AddCard />} />
+        <Route path=":cardId">
+          <Route index element={<Card />} />
+        </Route>
       </Route>
 
       <Route path="*" element={<Error404 />} />
