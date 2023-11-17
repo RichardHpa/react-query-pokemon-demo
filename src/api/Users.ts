@@ -17,7 +17,7 @@ export const createUser = async ({ ...data }) => {
 export const getUsers = async () => {
   const response = await axios.get('api/users');
 
-  if (response.status !== 200) {
+  if (response.status !== 200 || !response.data) {
     throw new Error('Something went wrong.');
   }
 

@@ -1,0 +1,1 @@
+export { PokemonApiSearch } from './PokemonApiSearch';

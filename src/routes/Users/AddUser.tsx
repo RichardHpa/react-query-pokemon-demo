@@ -6,6 +6,8 @@ import { BreadcrumbHeader } from 'components/BreadcrumbHeader';
 import { ContentContainer } from 'components/ContentContainer';
 import { UserForm } from 'forms/UserForm';
 
+import type { User } from 'types/user';
+
 export const AddUser = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -13,7 +15,7 @@ export const AddUser = () => {
     mutationFn: createUser,
     onSuccess: res => {
       queryClient.setQueryData(['users', res.id], () => res);
-      queryClient.setQueryData(['users'], (old: any[]) => {
+      queryClient.setQueryData(['users'], (old: User[]) => {
         if (!old) return;
         old.push(res);
         return old;

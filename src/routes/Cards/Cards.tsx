@@ -7,11 +7,12 @@ import { getCards } from 'api/Cards';
 import { BreadcrumbHeader } from 'components/BreadcrumbHeader';
 
 import type { RegularBreakpoints } from '@mui/material';
+import type { Card } from 'types/card';
 
 const loadingCount = 12;
 
 const gridMap = {
-  sx: 12,
+  xs: 12,
   sm: 6,
   md: 4,
   lg: 2,
@@ -32,18 +33,9 @@ export const Cards = () => {
     }
     if (!isLoading && data) {
       if (data.length > 0) {
-        return data.map(card => {
+        return data.map((card: Card) => {
           return (
-            <Grid
-              item
-              xs={12}
-              sm={2}
-              md={4}
-              lg={2}
-              key={card.id}
-              component={Link}
-              to={`/cards/${card.id}`}
-            >
+            <Grid item {...gridMap} key={card.id} component={Link} to={`/cards/${card.id}`}>
               <img src="images/cardBack.png" width="100%" alt="pokemon card back" />
             </Grid>
           );

@@ -1,7 +1,5 @@
 import axios from 'helpers/axios';
 
-import type { Card } from 'types/card';
-
 export const createCard = async ({ ...data }) => {
   const response = await axios.post(`api/cards`, JSON.stringify(data), {
     headers: {
@@ -17,7 +15,7 @@ export const createCard = async ({ ...data }) => {
 };
 
 export const getCards = async () => {
-  const response = await axios.get<Card[]>('api/cards');
+  const response = await axios.get('api/cards');
 
   if (response.status !== 200) {
     throw new Error('Something went wrong.');
