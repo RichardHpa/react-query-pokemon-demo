@@ -19,6 +19,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getCard, deleteCard } from 'api/Cards';
 import { invariant } from 'helpers/invariant';
 import { BreadcrumbHeader } from 'components/BreadcrumbHeader';
+import { SelectUsers } from './components/SelectUsers';
 
 export const Card = () => {
   const queryClient = useQueryClient();
@@ -34,18 +35,18 @@ export const Card = () => {
   const { mutateAsync, isPending } = useMutation({
     mutationFn: () => deleteCard(cardId),
     onSuccess: () => {
-      // queryClient.setQueryData(['users'], (old: any[]) => {
-      //   if (!old) return;
+      queryClient.setQueryData(['cards'], (old: any[]) => {
+        if (!old) return;
 
-      //   const indexOfObject = old.findIndex(object => {
-      //     return object.id === cardid;
-      //   });
+        const indexOfObject = old.findIndex(object => {
+          return object.id === cardId;
+        });
 
-      //   old.splice(indexOfObject, 1);
-      //   return old;
-      // });
-      // queryClient.invalidateQueries({ queryKey: ['users', userId] });
-      navigate('/users');
+        old.splice(indexOfObject, 1);
+        return old;
+      });
+      queryClient.invalidateQueries({ queryKey: ['cards', cardId] });
+      navigate('/cards');
     },
   });
 
@@ -89,22 +90,31 @@ export const Card = () => {
       ) : (
         <Grid container spacing={4}>
           <Grid item xs={12} md={4}>
-            <img src={data.image} width="100%" alt={data.name} />
+            <img
+              src={data.image}
+              width="100%"
+              alt={data.name}
+              onError={({ currentTarget }) => {
+                currentTarget.onerror = null;
+                currentTarget.src = 'images/cardBack.png';
+              }}
+            />
           </Grid>
           <Grid item xs={12} md={8}>
             <Stack spacing={4} sx={{ height: '100%' }}>
-              <MuiCard
-                sx={{
-                  flexGrow: 1,
-                }}
-              >
+              <MuiCard>
                 <CardHeader title="Card Details" titleTypographyProps={{ variant: 'h6' }} />
                 <List>
                   <ListItem>
                     <ListItemText primary="Name" secondary={data.name} />
                   </ListItem>
+                  <ListItem>
+                    <ListItemText primary="Value" secondary={`$${data.value}`} />
+                  </ListItem>
                 </List>
               </MuiCard>
+
+              <SelectUsers card={data} />
 
               <MuiCard>
                 <CardHeader title="Delete card" titleTypographyProps={{ variant: 'h6' }} />

@@ -48,13 +48,23 @@ export const PokemonApiSearch: FC<PokemonApiSearchProps> = ({ onSelect }) => {
   const [value, setValue] = useState<CardApi | null>(null);
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState<CardApi[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const debouncedSearch = useDebounce(inputValue, 500);
 
   const { isFetching, data, refetch } = useTodos(debouncedSearch);
 
-  const loading =
-    isFetching || inputValue.length > 0 || (open && inputValue.length > 0 && options.length === 0);
+  useEffect(() => {
+    setLoading(isFetching);
+  }, [isFetching]);
+
+  useEffect(() => {
+    setLoading(false);
+  }, [debouncedSearch]);
+
+  useEffect(() => {
+    setLoading(true);
+  }, [inputValue]);
 
   useEffect(() => {
     let active = true;
@@ -77,23 +87,19 @@ export const PokemonApiSearch: FC<PokemonApiSearchProps> = ({ onSelect }) => {
     }
   }, [data]);
 
-  useEffect(() => {
-    if (!open) {
-      setOptions([]);
-    }
-  }, [open]);
-
   return (
     <Autocomplete
       filterOptions={x => x}
       options={options}
       getOptionLabel={option => (typeof option === 'string' ? option : option.name)}
-      isOptionEqualToValue={(option, value) => option.name === value.name}
+      isOptionEqualToValue={(option, value) => option.id === value.id}
       autoComplete
       includeInputInList
       filterSelectedOptions
       value={value}
       open={open}
+      clearOnBlur
+      blurOnSelect
       onOpen={() => {
         setOpen(true);
       }}

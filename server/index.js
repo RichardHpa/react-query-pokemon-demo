@@ -6,6 +6,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
+const addCardToUserRouter = require('./routes/usersCards');
 
 const dbRoute = './server/db.json';
 
@@ -19,7 +20,7 @@ if (!fs.existsSync(dbRoute)) {
 const adapter = new FileSync(dbRoute);
 const db = low(adapter);
 
-db.defaults({ users: [], cards: [] }).write();
+db.defaults({ users: [], cards: [], usersCards: [] }).write();
 
 const app = express();
 app.db = db;
@@ -32,6 +33,7 @@ app.use(morgan('dev'));
 
 app.use('/api/users', usersRouter);
 app.use('/api/cards', cardsRouter);
+app.use('/api/addCardToUser', addCardToUserRouter);
 
 const PORT = 3001;
 

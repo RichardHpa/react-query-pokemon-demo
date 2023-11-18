@@ -36,7 +36,15 @@ export const Cards = () => {
         return data.map((card: Card) => {
           return (
             <Grid item {...gridMap} key={card.id} component={Link} to={`/cards/${card.id}`}>
-              <img src={card.image} width="100%" alt="pokemon card back" />
+              <img
+                src={card.image}
+                width="100%"
+                alt="pokemon card back"
+                onError={({ currentTarget }) => {
+                  currentTarget.onerror = null;
+                  currentTarget.src = 'images/cardBack.png';
+                }}
+              />
             </Grid>
           );
         });
@@ -59,15 +67,15 @@ export const Cards = () => {
   return (
     <div>
       <BreadcrumbHeader
-        title="All Cards"
+        title="Loaded cards"
         actions={
           <Button variant="contained" component={Link} to="/cards/add">
-            Add New Card
+            Load a new card
           </Button>
         }
         crumbs={[
           {
-            label: 'Cards',
+            label: 'Loaded Cards',
           },
         ]}
       />

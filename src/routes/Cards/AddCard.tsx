@@ -57,7 +57,7 @@ export const AddCard = () => {
         title="Add New Card"
         crumbs={[
           {
-            label: 'Cards',
+            label: 'Loaded Cards',
             path: '/cards',
           },
           {
