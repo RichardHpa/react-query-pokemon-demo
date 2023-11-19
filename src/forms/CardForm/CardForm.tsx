@@ -73,7 +73,7 @@ export const CardForm: FC<CardFormProps> = ({ initialValues, onSubmit, loading }
 
         <Grid item xs={12}>
           <Button type="submit" variant="contained" disabled={loading}>
-            {initialValues ? 'Update Card' : 'Add New Card'}
+            Upload card
           </Button>
         </Grid>
       </Grid>

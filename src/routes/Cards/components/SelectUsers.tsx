@@ -18,7 +18,7 @@ export const SelectUsers: FC<SelectUsersProps> = ({ card }) => {
   const queryClient = useQueryClient();
   const [users, setUsers] = useState<User[]>([]);
   const { data, isLoading: loadingAllUsers } = useQuery({ queryKey: ['users'], queryFn: getUsers });
-  const { data: matchedUsers, isLoading: loadingMatches } = useQuery({
+  const { data: matchedUsers } = useQuery({
     queryKey: ['cards', card.id, 'users'],
     queryFn: () => getUsersWhoOwnCard(card.id!),
   });

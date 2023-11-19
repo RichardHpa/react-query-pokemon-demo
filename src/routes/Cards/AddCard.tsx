@@ -17,7 +17,7 @@ const getHighestValue = (tcgPlayer?: PokemonTCG.TCGPlayer) => {
   if (!tcgPlayer) return NaN;
   let arr = Object.keys(tcgPlayer.prices).map(key => {
     // @ts-expect-error
-    return tcgPlayer.prices[key].high;
+    return tcgPlayer.prices[key].market;
   });
 
   return Math.max(...arr);
@@ -78,7 +78,7 @@ export const AddCard = () => {
             </Grid>
             <Grid item xs>
               <ContentContainer>
-                <CardForm onSubmit={mutateAsync} loading={isPending} initialValues={defaultInfo} />{' '}
+                <CardForm onSubmit={mutateAsync} loading={isPending} initialValues={defaultInfo} />
               </ContentContainer>
             </Grid>
           </Grid>

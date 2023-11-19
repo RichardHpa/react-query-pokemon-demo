@@ -55,3 +55,12 @@ export const deleteCard = async (cardId: string) => {
 
   return response.data;
 };
+
+export const updateCardPrice = async (apiCardId: string) => {
+  const response = await axios.patch(`api/cards/${apiCardId}/updatePrice`);
+  if (response.status !== 200) {
+    throw new Error('Something went wrong.');
+  }
+
+  return response.data;
+};

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { v4: uuidv4 } = require('uuid');
+const axios = require('axios');
 
 const DELAY = 1000;
 
@@ -54,6 +55,28 @@ router.delete('/:id', (req, res) => {
   setTimeout(() => {
     res.sendStatus(200);
   }, DELAY);
+});
+
+router.patch('/:id/updatePrice', async (req, res) => {
+  const id = req.params.id;
+  try {
+    const response = await axios.get(`https://api.pokemontcg.io/v2/cards/${id}`);
+    const tcgPlayer = response.data.data.tcgplayer;
+    if (!tcgPlayer) {
+      throw new Error('cant find prices');
+    }
+    const arr = Object.keys(tcgPlayer.prices).map(key => {
+      return tcgPlayer.prices[key].market;
+    });
+    const max = Math.max(...arr);
+    const card = req.app.db.get('cards').find({ apiId: id }).assign({ value: max }).write();
+
+    setTimeout(() => {
+      res.send(card);
+    }, DELAY);
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 module.exports = router;

@@ -1,4 +1,4 @@
-import { Grid, Card, CardHeader } from '@mui/material';
+import { Grid } from '@mui/material';
 
 import { UserCountCard, CardsCountCard, TotalValue } from 'components/Cards';
 

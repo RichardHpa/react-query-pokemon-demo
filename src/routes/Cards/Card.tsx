@@ -13,13 +13,15 @@ import {
   Box,
   Typography,
 } from '@mui/material';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { getCard, deleteCard } from 'api/Cards';
+import { getCard, deleteCard, updateCardPrice } from 'api/Cards';
 import { invariant } from 'helpers/invariant';
 import { BreadcrumbHeader } from 'components/BreadcrumbHeader';
 import { SelectUsers } from './components/SelectUsers';
+
+import type { Card as CardProps } from 'types/card';
 
 export const Card = () => {
   const queryClient = useQueryClient();
@@ -50,6 +52,20 @@ export const Card = () => {
     },
   });
 
+  const { mutateAsync: updatePrice } = useMutation({
+    mutationFn: () => updateCardPrice(data.apiId),
+    onSuccess: res => {
+      if (res.value !== data.value) {
+        queryClient.setQueryData(['cards', cardId], (currentCard: CardProps) => {
+          currentCard.value = res.value;
+          return currentCard;
+        });
+        queryClient.invalidateQueries({ queryKey: ['users'] });
+        queryClient.invalidateQueries({ queryKey: ['stats'] });
+      }
+    },
+  });
+
   const isProcessing = isLoading || isPending;
 
   return (
@@ -58,13 +74,8 @@ export const Card = () => {
         title={data?.name}
         loading={isLoading}
         actions={
-          <Button
-            variant="contained"
-            component={Link}
-            to={`/cards/${cardId}/edit`}
-            disabled={isProcessing}
-          >
-            Edit Card
+          <Button variant="contained" disabled={isProcessing} onClick={() => updatePrice()}>
+            Update Card Price
           </Button>
         }
         crumbs={[

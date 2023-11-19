@@ -23,8 +23,6 @@ router.post('/', (req, res) => {
   try {
     const user = {
       id: uuidv4(),
-      cardCount: 0,
-      totalValue: 0,
       ...req.body,
     };
     req.app.db.get('users').push(user).write();
