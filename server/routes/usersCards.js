@@ -4,17 +4,25 @@ const router = express.Router();
 const DELAY = 1000;
 
 router.post('/', (req, res) => {
+  const userId = req.body.userId;
+  const cardId = req.body.cardId;
   try {
     req.app.db
       .get('usersCards')
       .push({
-        userId: req.body.userId,
-        cardId: req.body.cardId,
+        userId: userId,
+        cardId: cardId,
       })
       .write();
 
+    const user = req.app.db.get('users').find({ id: userId }).value();
+
     setTimeout(() => {
-      res.send('success');
+      res.send({
+        status: 'success',
+        user,
+        cardId,
+      });
     }, DELAY);
   } catch (error) {
     return res.status(500).send(error);

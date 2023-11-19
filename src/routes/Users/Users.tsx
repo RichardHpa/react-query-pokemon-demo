@@ -82,8 +82,8 @@ export const Users = () => {
                     </TableCell>
 
                     <TableCell>{row.username}</TableCell>
-                    <TableCell>0</TableCell>
-                    <TableCell>$0.00</TableCell>
+                    <TableCell>{row.cardCount}</TableCell>
+                    <TableCell>${row.totalValue}</TableCell>
                     <TableCell align="right">
                       <Stack direction="row" justifyContent="flex-end">
                         <IconButton

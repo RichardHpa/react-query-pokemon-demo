@@ -1,6 +1,6 @@
 import { Grid, Card, CardHeader } from '@mui/material';
 
-import { UserCountCard, CardsCountCard } from 'components/Cards';
+import { UserCountCard, CardsCountCard, TotalValue } from 'components/Cards';
 
 import { BreadcrumbHeader } from 'components/BreadcrumbHeader';
 
@@ -16,9 +16,7 @@ export const Home = () => {
           <CardsCountCard />
         </Grid>
         <Grid item xs={12} md={4}>
-          <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-            <CardHeader title="Total Value" titleTypographyProps={{ variant: 'h6' }} />
-          </Card>
+          <TotalValue />
         </Grid>
       </Grid>
     </div>

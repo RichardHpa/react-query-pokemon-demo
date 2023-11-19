@@ -20,10 +20,6 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      retry: false,
-      staleTime: 5 * 60 * 1000,
     },
   },
 });
@@ -38,7 +34,6 @@ root.render(
           <App />
         </ThemeProvider>
       </BrowserRouter>
-      {/* The rest of your application */}
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   </React.StrictMode>

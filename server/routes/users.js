@@ -1,11 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const { v4: uuidv4 } = require('uuid');
+const utils = require('../utils');
 
 const DELAY = 1000;
 
 router.get('/', (req, res) => {
-  const users = req.app.db.get('users');
+  const rawUsers = req.app.db.get('users').value();
+
+  const users = rawUsers.map(user => ({
+    ...user,
+    cardCount: utils.getCardCountPerUser(req.app.db, user.id),
+    totalValue: utils.getTotalInvestmentPerUser(req.app.db, user.id),
+  }));
 
   setTimeout(() => {
     res.send(users);
@@ -16,6 +23,8 @@ router.post('/', (req, res) => {
   try {
     const user = {
       id: uuidv4(),
+      cardCount: 0,
+      totalValue: 0,
       ...req.body,
     };
     req.app.db.get('users').push(user).write();

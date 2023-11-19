@@ -15,7 +15,7 @@ interface SelectUsersProps {
 }
 
 export const SelectUsers: FC<SelectUsersProps> = ({ card }) => {
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
   const [users, setUsers] = useState<User[]>([]);
   const { data, isLoading: loadingAllUsers } = useQuery({ queryKey: ['users'], queryFn: getUsers });
   const { data: matchedUsers, isLoading: loadingMatches } = useQuery({
@@ -28,32 +28,47 @@ export const SelectUsers: FC<SelectUsersProps> = ({ card }) => {
       setUsers(matchedUsers);
     }
   }, [matchedUsers]);
-  // const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
 
-  const { mutateAsync: addUser, isPending } = useMutation({
+  const { mutateAsync: addCardToUserAsync } = useMutation({
     mutationFn: (id: string) => addCardToUser({ userId: id, cardId: card.id! }),
     onSuccess: res => {
-      // queryClient.setQueryData(['card', res.id], () => res);
-      // queryClient.setQueryData(['cards'], (old: Card[]) => {
-      //   if (!old) return;
-      //   old.push(res);
-      //   return old;
-      // });
-      // navigate(`/cards/${res.id}`);
+      queryClient.setQueryData(['users'], (old: User[]) => {
+        if (!old) return;
+        const target = old.find(obj => obj.id === res.userId);
+        if (target) {
+          target.totalValue += card.value;
+        }
+        return old;
+      });
+
+      queryClient.setQueryData(['cards', card.id, 'users'], (old: User[]) => {
+        if (!old) return;
+        old.push(res.user);
+        return old;
+      });
     },
   });
 
   const { mutateAsync: removeUser } = useMutation({
     mutationFn: (userId: string) => removeCardFromUser({ userId, cardId: card.id! }),
     onSuccess: res => {
-      console.log(res);
-      // queryClient.setQueryData(['card', res.id], () => res);
-      // queryClient.setQueryData(['cards'], (old: Card[]) => {
-      //   if (!old) return;
-      //   old.push(res);
-      //   return old;
-      // });
-      // navigate(`/cards/${res.id}`);
+      queryClient.setQueryData(['users'], (currentUsers: User[]) => {
+        if (!currentUsers) return;
+        const target = currentUsers.find(obj => obj.id === res.userId);
+        if (target) {
+          target.totalValue -= card.value;
+        }
+        return currentUsers;
+      });
+
+      queryClient.setQueryData(['cards', card.id, 'users'], (currentOwners: User[]) => {
+        const indexOfObject = currentOwners.findIndex(object => {
+          return object.id === res.userId;
+        });
+
+        currentOwners.splice(indexOfObject, 1);
+        return currentOwners;
+      });
     },
   });
 
@@ -81,7 +96,7 @@ export const SelectUsers: FC<SelectUsersProps> = ({ card }) => {
             if (detail?.option) {
               setUsers(value);
               if (reason === 'selectOption') {
-                addUser(detail?.option.id);
+                addCardToUserAsync(detail?.option.id);
               }
               if (reason === 'removeOption') {
                 removeUser(detail?.option.id);

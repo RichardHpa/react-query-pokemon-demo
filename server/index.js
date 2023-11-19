@@ -7,6 +7,7 @@ const morgan = require('morgan');
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
 const addCardToUserRouter = require('./routes/usersCards');
+const statsRouter = require('./routes/stats');
 
 const dbRoute = './server/db.json';
 
@@ -34,6 +35,7 @@ app.use(morgan('dev'));
 app.use('/api/users', usersRouter);
 app.use('/api/cards', cardsRouter);
 app.use('/api/addCardToUser', addCardToUserRouter);
+app.use('/api/stats', statsRouter);
 
 const PORT = 3001;
 
