@@ -45,10 +45,13 @@ router.delete('/:cardId', (req, res) => {
 
   req.app.db.get('usersCards').remove({ userId, cardId }).write();
 
+  const user = req.app.db.get('users').find({ id: userId }).value();
+
   setTimeout(() => {
     res.send({
+      status: 'success',
+      user,
       cardId,
-      userId,
     });
   }, DELAY);
 });

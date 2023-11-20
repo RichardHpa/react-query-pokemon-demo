@@ -4,6 +4,8 @@ import { Autocomplete, TextField, Grid, CircularProgress } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useDebounce } from 'utils/useDebounce';
 
+import { Image } from 'components/Image';
+
 import type { CardApi } from 'types/card';
 import type { FC } from 'react';
 
@@ -136,7 +138,7 @@ export const PokemonApiSearch: FC<PokemonApiSearchProps> = ({ onSelect }) => {
           <li {...props} key={`${option.id}`}>
             <Grid container alignItems="center" spacing={2}>
               <Grid item sx={{ display: 'flex', width: 60 }}>
-                <img src={option.images.small} alt={option.name} width="100%" />
+                <Image src={option.images.small} alt={option.name} />
               </Grid>
               <Grid item>{option.name}</Grid>
             </Grid>

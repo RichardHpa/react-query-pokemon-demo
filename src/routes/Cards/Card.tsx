@@ -15,8 +15,11 @@ import {
 } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useSnackbar } from 'notistack';
 
 import { getCard, deleteCard, updateCardPrice } from 'api/Cards';
+
+import { Image } from 'components/Image';
 import { invariant } from 'helpers/invariant';
 import { BreadcrumbHeader } from 'components/BreadcrumbHeader';
 import { SelectUsers } from './components/SelectUsers';
@@ -26,6 +29,7 @@ import type { Card as CardProps } from 'types/card';
 export const Card = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
   const { cardId } = useParams();
   invariant(cardId);
 
@@ -52,7 +56,7 @@ export const Card = () => {
     },
   });
 
-  const { mutateAsync: updatePrice } = useMutation({
+  const { mutateAsync: updatePrice, isPending: pricePending } = useMutation({
     mutationFn: () => updateCardPrice(data.apiId),
     onSuccess: res => {
       if (res.value !== data.value) {
@@ -62,11 +66,14 @@ export const Card = () => {
         });
         queryClient.invalidateQueries({ queryKey: ['users'] });
         queryClient.invalidateQueries({ queryKey: ['stats'] });
+        enqueueSnackbar('Prices have been updated', { variant: 'success' });
+      } else {
+        enqueueSnackbar('No price change', { variant: 'info' });
       }
     },
   });
 
-  const isProcessing = isLoading || isPending;
+  const isProcessing = isLoading || isPending || pricePending;
 
   return (
     <div>
@@ -101,15 +108,7 @@ export const Card = () => {
       ) : (
         <Grid container spacing={4}>
           <Grid item xs={12} md={4}>
-            <img
-              src={data.image}
-              width="100%"
-              alt={data.name}
-              onError={({ currentTarget }) => {
-                currentTarget.onerror = null;
-                currentTarget.src = 'images/cardBack.png';
-              }}
-            />
+            <Image src={data.image} alt={data.name} />
           </Grid>
           <Grid item xs={12} md={8}>
             <Stack spacing={4} sx={{ height: '100%' }}>

@@ -16,9 +16,10 @@ import {
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { getUser, deleteUser } from 'api/Users';
+import { getUser, deleteUser, getUsersCards } from 'api/Users';
 import { invariant } from 'helpers/invariant';
 import { BreadcrumbHeader } from 'components/BreadcrumbHeader';
+import { CardGrid } from 'components/CardGrid';
 
 export const User = () => {
   const queryClient = useQueryClient();
@@ -26,9 +27,14 @@ export const User = () => {
   const { userId } = useParams();
   invariant(userId);
 
-  const { data, isLoading } = useQuery({
+  const { data: userData, isLoading: userLoading } = useQuery({
     queryKey: ['users', userId],
     queryFn: () => getUser(userId),
+  });
+
+  const { data: usersCards, isLoading: usersCardsLoading } = useQuery({
+    queryKey: ['users', userId, 'cards'],
+    queryFn: () => getUsersCards(userId),
   });
 
   const { mutateAsync, isPending } = useMutation({
@@ -49,13 +55,13 @@ export const User = () => {
     },
   });
 
-  const isProcessing = isLoading || isPending;
+  const isProcessing = userLoading || isPending;
 
   return (
     <div>
       <BreadcrumbHeader
-        title={`${data?.firstName} ${data?.lastName}`}
-        loading={isLoading}
+        title={`${userData?.firstName} ${userData?.lastName}`}
+        loading={userLoading}
         actions={
           <Button
             variant="contained"
@@ -77,7 +83,7 @@ export const User = () => {
         ]}
       />
 
-      {isLoading ? (
+      {userLoading ? (
         <Grid container spacing={4}>
           <Grid item xs={12} md={4}>
             <Skeleton variant="rectangular" height={250} />
@@ -87,62 +93,71 @@ export const User = () => {
           </Grid>
         </Grid>
       ) : (
-        <Grid container spacing={4}>
-          <Grid item xs={12} md={4}>
-            <Card sx={{ height: '100%' }}>
-              <CardHeader title="User Details" titleTypographyProps={{ variant: 'h6' }} />
-              <List>
-                <ListItem divider>
-                  <ListItemText primary="First Name" secondary={data.firstName} />
-                </ListItem>
-                <ListItem divider>
-                  <ListItemText primary="Last Name" secondary={data.lastName} />
-                </ListItem>
-                <ListItem divider>
-                  <ListItemText primary="Username" secondary={data.username} />
-                </ListItem>
-                <ListItem>
-                  <ListItemText primary="Email" secondary={data.email} />
-                </ListItem>
-              </List>
-            </Card>
-          </Grid>
-          <Grid item xs={12} md={8}>
-            <Stack spacing={4} sx={{ height: '100%' }}>
-              <Card
-                sx={{
-                  flexGrow: 1,
-                }}
-              >
-                <CardHeader title="Details Coming" titleTypographyProps={{ variant: 'h6' }} />
+        <div>
+          <Grid container spacing={4}>
+            <Grid item xs={12} md={4}>
+              <Card sx={{ height: '100%' }}>
+                <CardHeader title="User Details" titleTypographyProps={{ variant: 'h6' }} />
+                <List>
+                  <ListItem divider>
+                    <ListItemText primary="First Name" secondary={userData.firstName} />
+                  </ListItem>
+                  <ListItem divider>
+                    <ListItemText primary="Last Name" secondary={userData.lastName} />
+                  </ListItem>
+                  <ListItem divider>
+                    <ListItemText primary="Username" secondary={userData.username} />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText primary="Email" secondary={userData.email} />
+                  </ListItem>
+                </List>
               </Card>
-              <Card>
-                <CardHeader title="Delete User" titleTypographyProps={{ variant: 'h6' }} />
-                <CardContent>
-                  <Box
-                    sx={{
-                      color: 'text.secondary',
-                    }}
-                  >
-                    <Typography variant="body2">
-                      Deleting a user will remove all information we hold, this cannot be undone
-                    </Typography>
-                  </Box>
-                </CardContent>
-                <CardActions>
-                  <Button
-                    variant="contained"
-                    color="error"
-                    onClick={() => mutateAsync()}
-                    disabled={isProcessing}
-                  >
-                    Delete User
-                  </Button>
-                </CardActions>
-              </Card>
-            </Stack>
+            </Grid>
+            <Grid item xs={12} md={8}>
+              <Stack spacing={4} sx={{ height: '100%' }}>
+                <Card
+                  sx={{
+                    flexGrow: 1,
+                  }}
+                >
+                  <CardHeader title="Details Coming" titleTypographyProps={{ variant: 'h6' }} />
+                </Card>
+                <Card>
+                  <CardHeader title="Delete User" titleTypographyProps={{ variant: 'h6' }} />
+                  <CardContent>
+                    <Box
+                      sx={{
+                        color: 'text.secondary',
+                      }}
+                    >
+                      <Typography variant="body2">
+                        Deleting a user will remove all information we hold, this cannot be undone
+                      </Typography>
+                    </Box>
+                  </CardContent>
+                  <CardActions>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      onClick={() => mutateAsync()}
+                      disabled={isProcessing}
+                    >
+                      Delete User
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Stack>
+            </Grid>
           </Grid>
-        </Grid>
+
+          <Box my={2}>
+            <Typography variant="h6" gutterBottom>
+              Cards owned
+            </Typography>
+            <CardGrid loading={usersCardsLoading} cards={usersCards} />
+          </Box>
+        </div>
       )}
     </div>
   );

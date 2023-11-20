@@ -6,6 +6,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ContentContainer } from 'components/ContentContainer';
 import { BreadcrumbHeader } from 'components/BreadcrumbHeader';
 import { PokemonApiSearch } from 'components/PokemonApiSearch';
+import { Image } from 'components/Image';
 import { CardForm } from 'forms/CardForm';
 
 import { createCard } from 'api/Cards';
@@ -74,7 +75,7 @@ export const AddCard = () => {
         {defaultInfo && (
           <Grid container spacing={4}>
             <Grid item xs={12} md={4}>
-              <img src={defaultInfo.image} width="100%" alt={defaultInfo.name} />
+              <Image src={defaultInfo.image} alt={defaultInfo.name} />
             </Grid>
             <Grid item xs>
               <ContentContainer>

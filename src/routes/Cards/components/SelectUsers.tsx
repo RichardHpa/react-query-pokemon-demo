@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-
 import { Autocomplete, TextField, Card, CardHeader, CardContent } from '@mui/material';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useSnackbar } from 'notistack';
 
 import { getUsers } from 'api/Users';
 import { addCardToUser, getUsersWhoOwnCard, removeCardFromUser } from 'api/UsersCards';
@@ -16,6 +16,7 @@ interface SelectUsersProps {
 
 export const SelectUsers: FC<SelectUsersProps> = ({ card }) => {
   const queryClient = useQueryClient();
+  const { enqueueSnackbar } = useSnackbar();
   const [users, setUsers] = useState<User[]>([]);
   const { data, isLoading: loadingAllUsers } = useQuery({ queryKey: ['users'], queryFn: getUsers });
   const { data: matchedUsers } = useQuery({
@@ -29,12 +30,12 @@ export const SelectUsers: FC<SelectUsersProps> = ({ card }) => {
     }
   }, [matchedUsers]);
 
-  const { mutateAsync: addCardToUserAsync } = useMutation({
+  const { mutateAsync: addCardToUserAsync, isPending: isAdding } = useMutation({
     mutationFn: (id: string) => addCardToUser({ userId: id, cardId: card.id! }),
     onSuccess: res => {
       queryClient.setQueryData(['users'], (old: User[]) => {
         if (!old) return;
-        const target = old.find(obj => obj.id === res.userId);
+        const target = old.find(obj => obj.id === res.user.id);
         if (target) {
           target.totalValue += card.value;
         }
@@ -46,15 +47,22 @@ export const SelectUsers: FC<SelectUsersProps> = ({ card }) => {
         old.push(res.user);
         return old;
       });
+
+      queryClient.setQueryData(['users', res.user.id, 'cards'], (currentCards: CardProps[]) => {
+        if (!currentCards) return;
+        currentCards.push(data);
+        return currentCards;
+      });
+      enqueueSnackbar(`${res.user.firstName} has been added`, { variant: 'success' });
     },
   });
 
-  const { mutateAsync: removeUser } = useMutation({
+  const { mutateAsync: removeUser, isPending: isRemoving } = useMutation({
     mutationFn: (userId: string) => removeCardFromUser({ userId, cardId: card.id! }),
     onSuccess: res => {
       queryClient.setQueryData(['users'], (currentUsers: User[]) => {
         if (!currentUsers) return;
-        const target = currentUsers.find(obj => obj.id === res.userId);
+        const target = currentUsers.find(obj => obj.id === res.user.id);
         if (target) {
           target.totalValue -= card.value;
         }
@@ -62,17 +70,30 @@ export const SelectUsers: FC<SelectUsersProps> = ({ card }) => {
       });
 
       queryClient.setQueryData(['cards', card.id, 'users'], (currentOwners: User[]) => {
+        if (!currentOwners) return;
         const indexOfObject = currentOwners.findIndex(object => {
-          return object.id === res.userId;
+          return object.id === res.user.id;
         });
 
         currentOwners.splice(indexOfObject, 1);
         return currentOwners;
       });
+
+      queryClient.setQueryData(['users', res.user.id, 'cards'], (currentCards: CardProps[]) => {
+        if (!currentCards) return;
+        const indexOfObject = currentCards.findIndex(object => {
+          return object.id === res.user.id;
+        });
+
+        currentCards.splice(indexOfObject, 1);
+        return currentCards;
+      });
+
+      enqueueSnackbar(`${res.user.firstName} has been removed`, { variant: 'warning' });
     },
   });
 
-  const loading = loadingAllUsers;
+  const loading = loadingAllUsers || isRemoving || isAdding;
 
   return (
     <Card>

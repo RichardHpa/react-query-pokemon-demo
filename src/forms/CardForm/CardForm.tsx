@@ -23,6 +23,7 @@ export const CardForm: FC<CardFormProps> = ({ initialValues, onSubmit, loading }
       value: '',
     },
     validationSchema: validationSchema,
+    enableReinitialize: true,
     onSubmit: async values => {
       onSubmit(values);
     },

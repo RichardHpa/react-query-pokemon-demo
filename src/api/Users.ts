@@ -55,3 +55,13 @@ export const deleteUser = async (userId: string) => {
 
   return response.data;
 };
+
+export const getUsersCards = async (userId: string) => {
+  const response = await axios.get(`api/users/${userId}/cards`);
+
+  if (response.status !== 200) {
+    throw new Error('Something went wrong.');
+  }
+
+  return response.data;
+};
