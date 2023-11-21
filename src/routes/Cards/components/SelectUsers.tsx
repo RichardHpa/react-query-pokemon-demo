@@ -36,6 +36,7 @@ export const SelectUsers: FC<SelectUsersProps> = ({ card }) => {
       queryClient.setQueryData(['users'], (old: User[]) => {
         if (!old) return;
         const target = old.find(obj => obj.id === res.user.id);
+
         if (target) {
           target.totalValue += card.value;
         }
@@ -53,6 +54,7 @@ export const SelectUsers: FC<SelectUsersProps> = ({ card }) => {
         currentCards.push(data);
         return currentCards;
       });
+
       enqueueSnackbar(`${res.user.firstName} has been added`, { variant: 'success' });
     },
   });

@@ -18,7 +18,7 @@ router.post('/', (req, res) => {
     const user = req.app.db.get('users').find({ id: userId }).value();
 
     setTimeout(() => {
-      res.send({
+      res.json({
         status: 'success',
         user,
         cardId,
@@ -35,7 +35,7 @@ router.get('/:cardId', (req, res) => {
   const users = joins.map(join => req.app.db.get('users').find({ id: join.userId }));
 
   setTimeout(() => {
-    res.send(users);
+    res.json(users);
   }, DELAY);
 });
 
@@ -48,7 +48,7 @@ router.delete('/:cardId', (req, res) => {
   const user = req.app.db.get('users').find({ id: userId }).value();
 
   setTimeout(() => {
-    res.send({
+    res.json({
       status: 'success',
       user,
       cardId,

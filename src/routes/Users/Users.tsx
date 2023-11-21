@@ -83,7 +83,7 @@ export const Users = () => {
 
                     <TableCell>{row.username}</TableCell>
                     <TableCell>{row.cardCount}</TableCell>
-                    <TableCell>${row.totalValue}</TableCell>
+                    <TableCell>${row.totalValue.toFixed(2)}</TableCell>
                     <TableCell align="right">
                       <Stack direction="row" justifyContent="flex-end">
                         <IconButton

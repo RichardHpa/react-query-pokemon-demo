@@ -18,7 +18,7 @@ export const TotalValue = () => {
             <Typography color="textSecondary" gutterBottom variant="body2">
               Overall value
             </Typography>
-            <Typography variant="h3">${data.totalValue}</Typography>
+            <Typography variant="h3">${data.totalValue.toFixed(2)}</Typography>
           </CardContent>
         </>
       )}

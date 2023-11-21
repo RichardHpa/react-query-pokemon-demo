@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
   const cards = req.app.db.get('cards');
 
   setTimeout(() => {
-    res.send(cards);
+    res.json(cards);
   }, DELAY);
 });
 
@@ -22,7 +22,7 @@ router.post('/', (req, res) => {
     req.app.db.get('cards').push(card).write();
 
     setTimeout(() => {
-      res.send(card);
+      res.json(card);
     }, DELAY);
   } catch (error) {
     return res.status(500).send(error);
@@ -33,7 +33,7 @@ router.get('/:id', (req, res) => {
   const card = req.app.db.get('cards').find({ id: req.params.id }).value();
 
   setTimeout(() => {
-    res.send(card);
+    res.json(card);
   }, DELAY);
 });
 
@@ -42,7 +42,7 @@ router.put('/:id', (req, res) => {
     req.app.db.get('cards').find({ id: req.params.id }).assign(req.body).write();
 
     setTimeout(() => {
-      res.send(req.app.db.get('cards').find({ id: req.params.id }));
+      res.json(req.app.db.get('cards').find({ id: req.params.id }));
     }, DELAY);
   } catch (e) {
     return res.status(500).send(e);
@@ -72,7 +72,7 @@ router.patch('/:id/updatePrice', async (req, res) => {
     const card = req.app.db.get('cards').find({ apiId: id }).assign({ value: max }).write();
 
     setTimeout(() => {
-      res.send(card);
+      res.json(card);
     }, DELAY);
   } catch (err) {
     console.log(err);

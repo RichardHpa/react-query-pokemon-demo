@@ -12,8 +12,8 @@ router.get('/totalValue', (req, res) => {
   });
 
   setTimeout(() => {
-    res.send({
-      totalValue: value.toFixed(2),
+    res.json({
+      totalValue: value,
     });
   }, DELAY);
 });

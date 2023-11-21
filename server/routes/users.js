@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
   }));
 
   setTimeout(() => {
-    res.send(users);
+    res.json(users);
   }, DELAY);
 });
 
@@ -28,7 +28,7 @@ router.post('/', (req, res) => {
     req.app.db.get('users').push(user).write();
 
     setTimeout(() => {
-      res.send(user);
+      res.json(user);
     }, DELAY);
   } catch (error) {
     return res.status(500).send(error);
@@ -39,7 +39,7 @@ router.get('/:userId', (req, res) => {
   const user = req.app.db.get('users').find({ id: req.params.userId }).value();
 
   setTimeout(() => {
-    res.send(user);
+    res.json(user);
   }, DELAY);
 });
 
@@ -48,7 +48,7 @@ router.put('/:userId', (req, res) => {
     req.app.db.get('users').find({ id: req.params.userId }).assign(req.body).write();
 
     setTimeout(() => {
-      res.send(req.app.db.get('users').find({ id: req.params.userId }));
+      res.json(req.app.db.get('users').find({ id: req.params.userId }));
     }, DELAY);
   } catch (e) {
     return res.status(500).send(e);
@@ -69,7 +69,7 @@ router.get('/:userId/cards', (req, res) => {
   const cards = joins.map(join => req.app.db.get('cards').find({ id: join.cardId }));
 
   setTimeout(() => {
-    res.send(cards);
+    res.json(cards);
   }, DELAY);
 });
 

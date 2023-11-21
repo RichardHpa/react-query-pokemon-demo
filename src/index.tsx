@@ -28,7 +28,12 @@ const queryClient = new QueryClient({
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
-    <SnackbarProvider>
+    <SnackbarProvider
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'left',
+      }}
+    >
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <ThemeProvider theme={Theme}>
