@@ -21,18 +21,13 @@ interface CardGridProps {
   loadingCount?: number;
 }
 
-function onError(e: any) {
-  e.target.src =
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/No_sign.svg/2048px-No_sign.svg.png';
-}
-
 export const CardGrid: FC<CardGridProps> = ({ loading, cards, loadingCount = 12 }) => {
   const renderCards = useMemo(() => {
     if (loading && !cards) {
       return Array.from(Array(loadingCount), (e, i) => {
         return (
           <Grid item {...gridMap} key={i}>
-            <img src="images/cardBack.png" width="100%" alt="pokemon card back" />
+            <img src="/images/cardBack.png" width="100%" alt="pokemon card back" />
           </Grid>
         );
       });

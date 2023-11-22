@@ -1,7 +1,7 @@
 import axiosRaw from 'axios';
 
 const axios = axiosRaw.create({
-  baseURL: `${process.env.REACT_APP_API_SERVER}/`,
+  baseURL: `${process.env.REACT_APP_API_BASE}:${process.env.REACT_APP_PORT}/`,
 });
 
 type Requests = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';

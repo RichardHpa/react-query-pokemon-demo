@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useSnackbar } from 'notistack';
 
 import { getUser, deleteUser, getUsersCards } from 'api/Users';
 import { invariant } from 'helpers/invariant';
@@ -26,6 +27,7 @@ export const User = () => {
   const navigate = useNavigate();
   const { userId } = useParams();
   invariant(userId);
+  const { enqueueSnackbar } = useSnackbar();
 
   const { data: userData, isLoading: userLoading } = useQuery({
     queryKey: ['users', userId],
@@ -51,6 +53,7 @@ export const User = () => {
         return old;
       });
       queryClient.invalidateQueries({ queryKey: ['users', userId] });
+      enqueueSnackbar('User has been deleted', { variant: 'success' });
       navigate('/users');
     },
   });

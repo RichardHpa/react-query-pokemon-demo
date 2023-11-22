@@ -51,6 +51,7 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
   req.app.db.get('cards').remove({ id: req.params.id }).write();
+  req.app.db.get('usersCards').remove({ cardId: req.params.id }).write();
 
   setTimeout(() => {
     res.sendStatus(200);

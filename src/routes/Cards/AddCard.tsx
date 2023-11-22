@@ -13,6 +13,7 @@ import { createCard } from 'api/Cards';
 
 import type { Card, CardApi } from 'types/card';
 import type { PokemonTCG } from 'pokemon-tcg-sdk-typescript';
+import { useSnackbar } from 'notistack';
 
 const getHighestValue = (tcgPlayer?: PokemonTCG.TCGPlayer) => {
   if (!tcgPlayer) return NaN;
@@ -28,6 +29,8 @@ export const AddCard = () => {
   const navigate = useNavigate();
   const [defaultInfo, setDefaultInfo] = useState<Card>();
   const queryClient = useQueryClient();
+  const { enqueueSnackbar } = useSnackbar();
+
   const { mutateAsync, isPending } = useMutation({
     mutationFn: createCard,
     onSuccess: res => {
@@ -37,7 +40,7 @@ export const AddCard = () => {
         old.push(res);
         return old;
       });
-
+      enqueueSnackbar('Card successfully loaded', { variant: 'success' });
       navigate(`/cards/${res.id}`);
     },
   });

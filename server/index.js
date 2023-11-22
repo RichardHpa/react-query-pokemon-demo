@@ -8,6 +8,7 @@ const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
 const addCardToUserRouter = require('./routes/usersCards');
 const statsRouter = require('./routes/stats');
+require('dotenv-flow').config();
 
 const dbRoute = './server/db.json';
 
@@ -37,6 +38,5 @@ app.use('/api/cards', cardsRouter);
 app.use('/api/addCardToUser', addCardToUserRouter);
 app.use('/api/stats', statsRouter);
 
-const PORT = 3001;
-
+const PORT = process.env.REACT_APP_PORT || 3001;
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));

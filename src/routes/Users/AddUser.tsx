@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useSnackbar } from 'notistack';
 
 import { createUser } from 'api/Users';
 import { BreadcrumbHeader } from 'components/BreadcrumbHeader';
@@ -11,6 +12,8 @@ import type { User } from 'types/user';
 export const AddUser = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { enqueueSnackbar } = useSnackbar();
+
   const { mutateAsync, isPending } = useMutation({
     mutationFn: createUser,
     onSuccess: res => {
@@ -25,6 +28,7 @@ export const AddUser = () => {
         old.push({ totalValue: 0, cardCount: 0, ...res });
         return old;
       });
+      enqueueSnackbar('User successfully added', { variant: 'success' });
       navigate(`/users/${res.id}`);
     },
   });

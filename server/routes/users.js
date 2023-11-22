@@ -61,6 +61,7 @@ router.put('/:userId', (req, res) => {
 
 router.delete('/:userId', (req, res) => {
   req.app.db.get('users').remove({ id: req.params.userId }).write();
+  req.app.db.get('usersCards').remove({ userId: req.params.userId }).write();
 
   setTimeout(() => {
     res.sendStatus(200);

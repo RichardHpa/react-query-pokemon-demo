@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button, Box, Skeleton } from '@mui/material';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
+import { useSnackbar } from 'notistack';
 
 import { getUser, updateUser, deleteUser } from 'api/Users';
 import { invariant } from 'helpers/invariant';
@@ -15,6 +16,7 @@ export const EditUser = () => {
   invariant(userId);
   const QUERY_KEY = ['users', userId];
   const queryClient = useQueryClient();
+  const { enqueueSnackbar } = useSnackbar();
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: values => updateUser(userId, values),
@@ -26,6 +28,7 @@ export const EditUser = () => {
         Object.assign(target, res);
         return old;
       });
+      enqueueSnackbar('User has been updated', { variant: 'success' });
     },
   });
 
@@ -43,6 +46,7 @@ export const EditUser = () => {
         return old;
       });
       queryClient.invalidateQueries({ queryKey: QUERY_KEY });
+      enqueueSnackbar('User has been removed', { variant: 'success' });
       navigate('/users');
     },
   });

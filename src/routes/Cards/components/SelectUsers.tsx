@@ -104,6 +104,7 @@ export const SelectUsers: FC<SelectUsersProps> = ({ card }) => {
         <Autocomplete
           multiple
           loading={loading}
+          disabled={loadingMatchedUsers}
           options={data || []}
           value={users}
           getOptionLabel={(option: User) => `${option.firstName} ${option.lastName}`}

@@ -52,6 +52,10 @@ export const Card = () => {
         return old;
       });
       queryClient.invalidateQueries({ queryKey: ['cards', cardId] });
+      queryClient.resetQueries({ queryKey: ['users'] });
+      queryClient.resetQueries({ queryKey: ['stats'] });
+
+      enqueueSnackbar('Card has successfully been removed', { variant: 'error' });
       navigate('/cards');
     },
   });
