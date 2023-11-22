@@ -14,10 +14,15 @@ export const AddUser = () => {
   const { mutateAsync, isPending } = useMutation({
     mutationFn: createUser,
     onSuccess: res => {
-      queryClient.setQueryData(['users', res.id], () => res);
+      queryClient.setQueryData(['users', res.id], () => {
+        return {
+          totalValue: 0,
+          ...res,
+        };
+      });
       queryClient.setQueryData(['users'], (old: User[]) => {
         if (!old) return;
-        old.push(res);
+        old.push({ totalValue: 0, cardCount: 0, ...res });
         return old;
       });
       navigate(`/users/${res.id}`);
