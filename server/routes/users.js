@@ -36,8 +36,12 @@ router.post('/', (req, res) => {
 });
 
 router.get('/:userId', (req, res) => {
-  const user = req.app.db.get('users').find({ id: req.params.userId }).value();
+  const rawUser = req.app.db.get('users').find({ id: req.params.userId }).value();
 
+  const user = {
+    ...rawUser,
+    totalValue: utils.getTotalInvestmentPerUser(req.app.db, req.params.userId),
+  };
   setTimeout(() => {
     res.json(user);
   }, DELAY);

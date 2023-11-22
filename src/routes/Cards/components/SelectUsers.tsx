@@ -19,7 +19,7 @@ export const SelectUsers: FC<SelectUsersProps> = ({ card }) => {
   const { enqueueSnackbar } = useSnackbar();
   const [users, setUsers] = useState<User[]>([]);
   const { data, isLoading: loadingAllUsers } = useQuery({ queryKey: ['users'], queryFn: getUsers });
-  const { data: matchedUsers } = useQuery({
+  const { data: matchedUsers, isLoading: loadingMatchedUsers } = useQuery({
     queryKey: ['cards', card.id, 'users'],
     queryFn: () => getUsersWhoOwnCard(card.id!),
   });
@@ -111,7 +111,7 @@ export const SelectUsers: FC<SelectUsersProps> = ({ card }) => {
           renderInput={params => (
             <TextField
               {...params}
-              label={`Users who have ${card.name}`}
+              label={loadingMatchedUsers ? 'loading users...' : `Users who have ${card.name}`}
               placeholder="Add card to users collection"
             />
           )}

@@ -64,8 +64,8 @@ export const Card = () => {
           currentCard.value = res.value;
           return currentCard;
         });
-        queryClient.invalidateQueries({ queryKey: ['users'] });
-        queryClient.invalidateQueries({ queryKey: ['stats'] });
+        queryClient.resetQueries({ queryKey: ['users'] });
+        queryClient.resetQueries({ queryKey: ['stats'] });
         enqueueSnackbar('Prices have been updated', { variant: 'success' });
       } else {
         enqueueSnackbar('No price change', { variant: 'info' });

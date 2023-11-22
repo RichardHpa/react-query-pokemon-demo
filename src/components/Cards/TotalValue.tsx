@@ -8,6 +8,7 @@ export const TotalValue = () => {
     queryKey: ['stats', 'totalValue'],
     queryFn: getTotalValue,
   });
+
   return (
     <Card sx={{ height: '100%', minHeight: '170px', display: 'flex', flexDirection: 'column' }}>
       {isLoading ? (

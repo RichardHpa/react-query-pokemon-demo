@@ -121,7 +121,10 @@ export const User = () => {
                     flexGrow: 1,
                   }}
                 >
-                  <CardHeader title="Details Coming" titleTypographyProps={{ variant: 'h6' }} />
+                  <CardHeader title="Total Value" titleTypographyProps={{ variant: 'h6' }} />
+                  <CardContent>
+                    <Typography variant="h3">${userData.totalValue.toFixed(2)}</Typography>
+                  </CardContent>
                 </Card>
                 <Card>
                   <CardHeader title="Delete User" titleTypographyProps={{ variant: 'h6' }} />
