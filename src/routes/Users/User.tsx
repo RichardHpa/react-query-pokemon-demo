@@ -123,7 +123,7 @@ export const User = () => {
                 >
                   <CardHeader title="Total Value" titleTypographyProps={{ variant: 'h6' }} />
                   <CardContent>
-                    <Typography variant="h3">${userData.totalValue.toFixed(2)}</Typography>
+                    <Typography variant="h3">${userData.totalValue}</Typography>
                   </CardContent>
                 </Card>
                 <Card>

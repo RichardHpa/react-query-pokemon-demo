@@ -8,7 +8,8 @@ import { Error404 } from './Errors';
 export const Routes = () => {
   return (
     <RouterRoutes>
-      <Route index element={<Navigate to="dashboard" replace />} />
+      {/* <Route index element={<Navigate to="dashboard" replace />} /> */}
+      <Route index element={<>Home</>} />
       <Route path="dashboard" element={<Home />} />
 
       <Route path="users">

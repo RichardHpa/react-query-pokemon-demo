@@ -15,7 +15,7 @@ const drawerWidth = 240;
 
 const items = [
   {
-    label: 'Home',
+    label: 'Dashboard',
     icon: <HomeIcon />,
     path: '/dashboard',
   },
